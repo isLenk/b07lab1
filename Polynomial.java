@@ -10,10 +10,21 @@ public class Polynomial {
     }
 
     public Polynomial add(Polynomial other) {
-        Polynomial lp=(other.coefficients.length>this.coefficients.length)?other:this, bp=(this!=lp)?this:other;
-        double[] nc=new double[lp.coefficients.length];
-        for (int i=-1;++i<lp.coefficients.length;) nc[i] = lp.coefficients[i]+((bp.coefficients.length>i)?bp.coefficients[i]:0);
-        return new Polynomial(nc);
+        // Determine which polynomial constains more coefficients.
+        Polynomial larger_poly = (other.coefficients.length > this.coefficients.length) ? other : this;
+        Polynomial smaller_poly = (this != larger_poly) ? this : other;
+
+        double[] new_coefficients = new double[larger_poly.coefficients.length];
+
+        // Add the larger polynomials coefficients to our new double array, and add the smaller coefficient if it exists.
+        for (int i=0; i < larger_poly.coefficients.length; i++) {
+            new_coefficients[i] = larger_poly.coefficients[i];
+            if (smaller_poly.coefficients.length > i) {
+                new_coefficients[i] += smaller_poly.coefficients[i];
+            }
+        }
+        
+        return new Polynomial(new_coefficients);
     }
 
     public double evaluate(double x) {
